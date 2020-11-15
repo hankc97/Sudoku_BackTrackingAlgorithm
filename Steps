@@ -1,0 +1,92 @@
+Approach:
+Use Backtracking Algorithm(recursion) to solve sudoku puzzle
+
+1) create printboard funct(board)
+a) get old/new board separated in terms of 3x3 with "|" and "-"
+
+2) get empty cell denoted as 0 on our board
+return the i,j or x,y coordinates of the empty cell in terms
+of a tuple so we can use this later on
+
+3)create funct that validates the cell position
+validcell(board, pos, num):
+pos = position of current empty cell
+num = 1-9 range that we will check so see if we shud store this
+current num in our empty cell only if it passes all the conditional 
+tests
+*There are 3 conditional tests
+a) Check if num repeats in current row
+using pos[0] (i*, j) we get the current row
+then we iterate through the row and check if it any num in row == num
+b) Check if num repeats in current column
+using pos[1] (i, j*) we get current column
+we iterate through each row with given pos column 
+if board[i][pos[1]] == num at any point we return False
+c) Check if num repeats in current box of 3x3
+3a) First get the location of the box we are in by dividing
+the given a = pos[0] // 3 and b = pos[1] // 3 (we dont want decimals)
+This gives us the board[a][b] first element of the box according to 3x3 box
+3b) After getting box location we need to get first element(top left)
+corner element of box as we want to compare all the element in 
+the box to the num
+a) To get first element we can multiply by * 3 to get the x,y pos
+b) To iterate through the box we can create two for loops.
+the 1st for loop will iterate over the rows of the current box =
+range(a*3 , a*3 + 3); we are iterating from first element to the
+3rd element after the first
+c) Now for every row we want 3 column values 
+range(b*3, b*3 + 3); this means for every row, we are iterating
+3 times to the right to check for if board[a][b] == num
+3c)If we loop through all 3 conditionals we return True 
+
+4)Create a funct that applies all functions
+sudokuSolve(board)
+a) solve this using backtracking(recursion)
+b) idea: if we go through the whole board in getemptycell funct
+it means we have completed the board itself so we can call base
+case to return True and completed board
+c) First we call getemptycell and store in variable 
+"empty_cell" 
+d) We will always check after every recursion if getemptycell() 
+reaches the end or what we call "None". If this is True then
+we return True and finalize the board as "Complete"
+e) else: (if board not None / Not Complete)
+we get the row and col from getemptycell() or stored variable
+4a) We can create our recursive / number check part for each empty empty_cell
+a) we create a for i loop for range(1,10) 10 exlusive
+b) We will check if the empty cell is valid using validcell() 
+c) If validcell, return True that means we will make 
+empty_cell == i @ current board[row][col]
+4b) If we get a successful cell, we move onto the recursive
+statement if sudokuSolve(board) which checks for the next cell
+is True.
+
+*How the Recursive/BackTracking Works
+1) Once we reach the if sudokuSolve(board) statement we enter
+a recursion
+2) This basically confirms that the current number that is stored
+in our prev empty_cell is correct relative to current board we have
+3) However, what can happen is down the line when an empty_cell
+iterates through all numbers 1-9 and none of them fits the criteria
+it allows the compiler to BACKTRACK to the prev linked emptycell 
+and return False in the if sudokuSolve(board) statement
+4) Where we skip the if statement as its False, and execute
+the code board[row][col] = 0, makeing the prev element back to 0
+5) We will continue our previous for i range 1, 10 loop from 
+where we left off
+i.e, if it was 3 we continue from 3 onwards to 9.
+6) The only way we can finish our recursion is when we 
+get our first return True from finishing (getting to the end) 
+of the board from getemptycell() functions
+7) if empty_cell == None, or when getemptycell() return None
+We can finally return True for the first time, which allows
+all our previous recursive statements become True 
+8) if sudokuSolve(board) == True, which returns True 
+for the last recursive case, and so on until we reach 
+our first recursive case where we complete our function with True 
+
+
+
+
+sudokusolverexample = (2020-10-30-15-13-59.png)
+
